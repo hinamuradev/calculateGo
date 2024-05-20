@@ -76,8 +76,7 @@ func main() {
 			operator = matches[2]
 
 		} else {
-			fmt.Println("Некорректный ввод.")
-			os.Exit(1)
+			panic("Некорректный ввод.")
 		}
 
 		if a <= 10 && b <= 10 {
@@ -92,26 +91,23 @@ func main() {
 				if b != 0 {
 					result = a / b
 				} else {
-					fmt.Println("На нуль делить нельзя")
-					os.Exit(1)
+					panic("На нуль делить нельзя")
 				}
 			default:
 				fmt.Println("Ты допустил ошибку!")
-				os.Exit(1)
+				panic("Ты допустил ошибку!")
 			}
 
 			if isRoman {
 				if result < 1 {
-					fmt.Println("Римские число не может быть равно 0 или меньше его!!!")
-					os.Exit(1)
+					panic("Римские число не может быть равно 0 или меньше его!!!")
 				}
 				fmt.Println("Ваше значение:", arabicToRoman(result))
 			} else {
 				fmt.Println("Ваше значение:", result)
 			}
 		} else {
-			fmt.Println("Число больше 10!")
-			os.Exit(1)
+			panic("Число больше 10!")
 		}
 	}
 }
