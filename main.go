@@ -61,64 +61,57 @@ func main() {
 		// Используем регулярное выражение для разделения операндов и оператора
 		roman := regexp.MustCompile(`^([IVXLCDM]+)([+\-*/])([IVXLCDM]+)$`)
 		arabic := regexp.MustCompile(`^(\d+)([+\-*/])(\d+)$`)
-		if roman.MatchString(text) {
+		if roman.MatchString(text) { // Римские числа
 			isRoman = true
 			matches := roman.FindStringSubmatch(text)
 
 			a = romanToArabic(matches[1])
 			b = romanToArabic(matches[3])
-			fmt.Println("Число 1.1:", a)
-			fmt.Println("Оператор:", matches[2])
-			fmt.Println("Число 2:", b)
 			operator = matches[2]
 
-		} else if arabic.MatchString(text) {
+		} else if arabic.MatchString(text) { // Арабские числа
 			matches := arabic.FindStringSubmatch(text)
 			a, _ = strconv.Atoi(matches[1])
 			b, _ = strconv.Atoi(matches[3])
-			fmt.Println("Число 1.2:", a)
-			fmt.Println("Оператор:", matches[2])
-			fmt.Println("Число 2:", b)
 			operator = matches[2]
 
 		} else {
 			fmt.Println("Некорректный ввод.")
-
+			os.Exit(1)
 		}
 
-		fmt.Println("Число 1.3:", a)
-		fmt.Println("Оператор:", operator)
-		fmt.Println("Чиисло 2:", b)
 		if a <= 10 && b <= 10 {
 			switch operator {
 			case "+":
 				result = a + b
-				fmt.Println("Твой ответ", result)
 			case "-":
 				result = a - b
-				fmt.Println("Твой ответ", result)
 			case "*":
 				result = a * b
-				fmt.Println("Твой ответ", result)
 			case "/":
 				if b != 0 {
 					result = a / b
-					fmt.Println("Твой ответ", result)
 				} else {
 					fmt.Println("На нуль делить нельзя")
-					continue
+					os.Exit(1)
 				}
 			default:
 				fmt.Println("Ты допустил ошибку!")
+				os.Exit(1)
 			}
 
 			if isRoman {
+				if result < 1 {
+					fmt.Println("Римские число не может быть равно 0 или меньше его!!!")
+					os.Exit(1)
+				}
 				fmt.Println("Ваше значение:", arabicToRoman(result))
 			} else {
 				fmt.Println("Ваше значение:", result)
 			}
 		} else {
-			fmt.Println("Числа больше 10!")
+			fmt.Println("Число больше 10!")
+			os.Exit(1)
 		}
 	}
 }
