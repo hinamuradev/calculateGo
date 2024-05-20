@@ -54,37 +54,71 @@ func main() {
 		text = strings.TrimSpace(text)
 		text = strings.ReplaceAll(text, " ", "")
 
+		var a, b, result int
+		var operator string
+		var isRoman bool
+
 		// Используем регулярное выражение для разделения операндов и оператора
-		re := regexp.MustCompile(`(\d+)([+\-*/])(\d+)`)
-		matches := re.FindStringSubmatch(text)
+		roman := regexp.MustCompile(`^([IVXLCDM]+)([+\-*/])([IVXLCDM]+)$`)
+		arabic := regexp.MustCompile(`^(\d+)([+\-*/])(\d+)$`)
+		if roman.MatchString(text) {
+			isRoman = true
+			matches := roman.FindStringSubmatch(text)
 
-		operand1, _ := strconv.Atoi(matches[1])
-		operand2, _ := strconv.Atoi(matches[3])
+			a = romanToArabic(matches[1])
+			b = romanToArabic(matches[3])
+			fmt.Println("Число 1.1:", a)
+			fmt.Println("Оператор:", matches[2])
+			fmt.Println("Число 2:", b)
+			operator = matches[2]
 
-		fmt.Println("Число 1:", operand1)
-		fmt.Println("Оператор:", matches[2])
-		fmt.Println("Чиисло 2:", operand2)
-		if operand1 <= 10 && operand2 <= 10 {
-			switch matches[2] {
+		} else if arabic.MatchString(text) {
+			matches := arabic.FindStringSubmatch(text)
+			a, _ = strconv.Atoi(matches[1])
+			b, _ = strconv.Atoi(matches[3])
+			fmt.Println("Число 1.2:", a)
+			fmt.Println("Оператор:", matches[2])
+			fmt.Println("Число 2:", b)
+			operator = matches[2]
+
+		} else {
+			fmt.Println("Некорректный ввод.")
+
+		}
+
+		fmt.Println("Число 1.3:", a)
+		fmt.Println("Оператор:", operator)
+		fmt.Println("Чиисло 2:", b)
+		if a <= 10 && b <= 10 {
+			switch operator {
 			case "+":
-				fmt.Println("Ваше значение: ", operand1+operand2)
-				break
+				result = a + b
+				fmt.Println("Твой ответ", result)
 			case "-":
-				fmt.Println("Ваше значение: ", operand1-operand2)
+				result = a - b
+				fmt.Println("Твой ответ", result)
 			case "*":
-				fmt.Println("Ваше значение: ", operand1*operand2)
+				result = a * b
+				fmt.Println("Твой ответ", result)
 			case "/":
-				if operand2 != 0 {
-					fmt.Println("Ваше значение: ", operand1/operand2)
+				if b != 0 {
+					result = a / b
+					fmt.Println("Твой ответ", result)
 				} else {
 					fmt.Println("На нуль делить нельзя")
+					continue
 				}
 			default:
 				fmt.Println("Ты допустил ошибку!")
 			}
+
+			if isRoman {
+				fmt.Println("Ваше значение:", arabicToRoman(result))
+			} else {
+				fmt.Println("Ваше значение:", result)
+			}
 		} else {
 			fmt.Println("Числа больше 10!")
 		}
-
 	}
 }
