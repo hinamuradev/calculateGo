@@ -54,9 +54,11 @@ func main() {
 		text = strings.TrimSpace(text)
 		text = strings.ReplaceAll(text, " ", "")
 
-		var a, b, result int
-		var operator string
-		var isRoman bool
+		var (
+			a, b, result int
+			operator     string
+			isRoman      bool
+		)
 
 		// Используем регулярное выражение для разделения операндов и оператора
 		roman := regexp.MustCompile(`^([IVXLCDM]+)([+\-*/])([IVXLCDM]+)$`)
